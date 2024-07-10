@@ -1,0 +1,36 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: beige;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    background-color: beige;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #333;
+}
+
+.post {
+    border: 1px solid #e0dbdb;
+    border-radius: 1%;
+    padding: 3%;
+    background-color: #ffffff;
+    transition: background-color 0.3s ease;
+}
+
+  .post:hover {
+    background-color: #f0f0f0; 
+  }
+
+  .comment {
+    color: #737070;
+}
+
+button {
+    margin-bottom: 5%;
+}

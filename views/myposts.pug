@@ -1,0 +1,77 @@
+doctype html
+html
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title My Posts
+    link(href="/static/favicon_io/1.ico" rel="icon" type="image/x-icon")
+    link(href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet")
+    link(href="/static/styles.css" rel="stylesheet")
+  body
+    .container
+      nav.navbar.navbar-expand-lg.navbar-light.bg-light
+        a.navbar-brand(href="#") My Posts
+        button.navbar-toggler(type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation")
+          span.navbar-toggler-icon
+        .collapse.navbar-collapse#navbarNav
+          ul.navbar-nav.ml-auto
+            li.nav-item
+              a.nav-link(href="/logout") Logout
+
+      if successMessages.length > 0
+        each msg in successMessages
+          .alert.alert-success= msg
+      if errorMessages.length > 0
+        each msg in errorMessages
+          .alert.alert-danger= msg
+
+      .mt-4
+        form(method="post" action="/myposts/posts")
+          .form-group
+            label(for="title") Title
+            input.form-control(type="text" name="title" required)
+          .form-group
+            label(for="content") Content
+            textarea.form-control(name="content" required)
+          .form-group
+            label(for="imageUrl") Image URL
+            input.form-control(type="text" name="imageUrl")
+          button.btn.btn-secondary(type="submit") Add Post
+
+      .mt-4
+        each post in user.posts
+          .post.mb-4
+            h3 #{post.title}
+            p.post-preview #{post.content.substring(0, 100)}...
+            .full-post
+              p #{post.content}
+              small.text-muted #{post.date.toLocaleString()} - #{user.username}
+              .comments.mt-3
+                if post.comments.length > 0
+                  each comment in post.comments
+                    .comment Comment:
+                      p #{comment.content}
+                      small.text-muted 
+                        if post.user && post.user.username
+                          | #{post.date.toLocaleString()} - #{post.user.username}
+                        else
+                          | #{post.date.toLocaleString()} - Unknown User
+                      form(method="post" action="/myposts/comments/delete")
+                        input(type="hidden" name="commentId" value=comment.id)
+                        button.btn.btn-danger(type="submit") Remove
+                else
+                  p No comments yet
+              form(method="post" action="/myposts/comments")
+                .form-group
+                  label(for="content") Add a comment
+                  textarea.form-control(name="content" required)
+                input(type="hidden" name="postId" value=post.id)
+                button.btn.btn-secondary(type="submit") Add Comment
+            form(method="post" action="/myposts/posts/delete")
+              input(type="hidden" name="postId" value=post.id)
+              button.btn.btn-danger(type="submit") Remove
+
+    script(src="https://code.jquery.com/jquery-3.5.1.slim.min.js")
+    script(src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js")
+    script(src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js")
+    script(src="../static/getMoreText.js")

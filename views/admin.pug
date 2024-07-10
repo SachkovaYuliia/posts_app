@@ -1,0 +1,57 @@
+doctype html
+html
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Admin Dashboard
+    link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css")
+  body
+    if successMessages.length > 0
+      each msg in successMessages
+        .alert.alert-success= msg
+    if errorMessages.length > 0
+      each msg in errorMessages
+        .alert.alert-danger= msg
+        
+    .container
+      h1 Admin Dashboard
+          .container
+      nav.navbar.navbar-expand-lg.navbar-light.bg-light
+        a.navbar-brand(href="#") 
+        button.navbar-toggler(type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation")
+          span.navbar-toggler-icon
+        .collapse.navbar-collapse#navbarNav
+          ul.navbar-nav.ml-auto
+            li.nav-item
+              a.nav-link(href="/logout") Logout
+        each user in users
+          .card.mb-3
+            .card-header
+              h2 #{user.username}
+            .card-body
+              if user.posts.length
+                h3 Posts
+                each post in user.posts
+                  .card.mb-3
+                    .card-header
+                      h4 #{post.title}
+                    .card-body
+                      p #{post.content}
+                      img(src=post.imageUrl, alt=post.title, style="max-width: 100%; height: auto;")
+                      h5 Comments
+                      each comment in post.comments
+                        .card.mb-2
+                          .card-body
+                            p #{comment.content}
+                            small.text-muted #{comment.user.username} - #{new Date(comment.date).toLocaleString()}
+                            form(method="post", action=`/admin/comments/${comment.id}?_method=DELETE`)
+                              button.btn.btn-danger(type="submit") Delete Comment
+                      form(method="post", action=`/admin/posts/${post.id}?_method=DELETE`)
+                        button.btn.btn-danger(type="submit") Delete Post
+              else
+                p No posts
+              form(method="post", action=`/admin/users/${user.id}?_method=DELETE`)
+                button.btn.btn-danger(type="submit") Delete User
+    script(src="https://code.jquery.com/jquery-3.5.1.slim.min.js")
+    script(src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js")
+    script(src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js")

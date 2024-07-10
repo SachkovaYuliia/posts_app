@@ -1,0 +1,31 @@
+html
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Логін
+    link(href="/static/favicon_io/1.ico" rel="icon" type="image/x-icon")
+    link(href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet")
+    link(href="../static/styles.css" rel="stylesheet")
+  body
+    if successMessages.length > 0
+    each msg in successMessages
+      .alert.alert-success= msg
+    if errorMessages.length > 0
+    each msg in errorMessages
+      .alert.alert-danger= msg
+      
+    .container
+      .row.justify-content-center
+        .col-md-6
+          h1 Login
+          form(method="post" action="/login")
+            .form-group
+              label(for="username") User name
+              input.form-control(type="text" name="username" required)
+            .form-group
+              label(for="password") Password
+              input.form-control(type="password" name="password" required)
+            button.btn.btn-secondart(type="submit") Login
+    script(src="https://code.jquery.com/jquery-3.5.1.slim.min.js")
+    script(src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js")
+    script(src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js")

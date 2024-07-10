@@ -1,0 +1,53 @@
+html
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Blogs
+    link(href="/static/favicon_io/1.ico" rel="icon" type="image/x-icon")
+    link(href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet")
+    link(href="/static/styles.css" rel="stylesheet")
+  body
+    .container
+      nav.navbar.navbar-expand-lg.navbar-light.bg-light
+        a.navbar-brand(href="#") Posts
+        button.navbar-toggler(type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation")
+          span.navbar-toggler-icon
+        .collapse.navbar-collapse#navbarNav
+          ul.navbar-nav.ml-auto
+            if !userId
+              li.nav-item
+                a.nav-link(href="/login") Authorization
+            else
+              li.nav-item
+                a.nav-link(href="/myposts") My Account
+      .mt-4
+        .post-list
+          each post in posts
+            .post.mb-4
+              if post.imageUrl
+                img(src=post.imageUrl alt="Post Image" class="img-fluid")
+              h3 #{post.title}
+              p.post-preview #{post.content.substring(0, 100)}...
+              a.read-more(href="#") Read More
+              .full-post.collapse
+                p #{post.content}
+                small.text-muted #{post.date.toLocaleString()} - #{post.user.username}
+                .comments.mt-3
+                  if post.comments && post.comments.length
+                    each comment in post.comments
+                      .comment Comment:
+                        p #{comment.content}
+                        small.text-muted #{comment.date.toLocaleString()} - #{comment.user.username}
+                  else
+                    p No comments yet
+                if userId
+                  form(method="post" action="/api/comments")
+                    .form-group
+                      label(for="content") Add a comment
+                      textarea.form-control(name="content" required)
+                    input(type="hidden" name="postId" value=post.id)
+                    button.btn.btn-secondary(type="submit") Add Comment
+    script(src="https://code.jquery.com/jquery-3.5.1.slim.min.js")
+    script(src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js")
+    script(src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js")
+    script(src="../static/get_more_text.js")
