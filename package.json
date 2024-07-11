@@ -11,7 +11,8 @@
     "filesync:dev": "nodemon ./file_synk.js",
     "server:dev": "nodemon --inspect server.js",
     "server": "node server.js",
-    "server:express:dev": "nodemon --inspect server_express.js"
+    "server:express:dev": "nodemon --inspect server_express.js",
+    "server:express": "node server_express.js"
   },
   "author": "",
   "license": "MIT",

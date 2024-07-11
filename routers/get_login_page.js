@@ -12,7 +12,7 @@ logInRouter.post('/login', validateUser, async (req, res, next) => {
   const { username, password } = req.body;
 
   try {
-    const user = await userService.getUserByUsername(username); // Очікуємо результат
+    const user = await userService.getUserByUsername(username); 
 
     if (user && user.password === password) {
       req.session.userId = user.id;
