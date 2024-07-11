@@ -1,0 +1,39 @@
+services:
+  server:
+    build:
+      context: .
+    environment:
+      NODE_ENV: production
+      DATA_SOURCE: db
+      DATABASE_URL: postgresql://postgres:0000@db:5432/posts_app
+    ports:
+      - 3000:3000
+    volumes:
+      - ./prisma:/usr/src/app/prisma:rw
+    depends_on:
+      db:
+        condition: service_healthy
+
+
+  db:
+    image: postgres
+    restart: always
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: posts_app
+      POSTGRES_USER: postgres  
+      POSTGRES_PASSWORD: 0000
+    expose:
+      - 5432
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+volumes:
+  db-data:
+
+
